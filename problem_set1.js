@@ -1,5 +1,5 @@
 
-p = 5;
+p = 8;
 n1 = 80000;
 n2 = 75;
 
@@ -9,6 +9,10 @@ function coin_flip(){
 
 function dice_roll(){
 	return ( Math.floor( 6 * Math.random() ) + 1)
+}
+
+function n_dice_roll(n){
+	return ( Math.floor( n * Math.random() ) + 1);
 }
 
 //Problem1
@@ -133,3 +137,95 @@ if ( p==5 ){
 	//No I get 151!
 }
 
+//Problem6
+// In Las Vegas, a roulette wheel has 38 slots numbered 0, 00, 1, 2, . . . , 36. The 0 and 00 slots are green and half of the remaining 36 slots are red and half are black. A croupier spins the wheel and throws in an ivory ball. If you bet 1 dollar on red, you win 1 dollar if the ball stops in a red slot and otherwise you lose 1 dollar. Write a program to find the total winnings for a player who makes 1000 bets on red.
+
+if ( p==6 ){
+	sum = 0;
+	for ( var a=0; a<100; a++){
+		winnings = 0;
+		for ( var i=0; i<1000; i++){
+			var roll = n_dice_roll(38);
+			if(roll <= 18){
+				winnings ++;
+			}
+			else{
+				winnings --;
+			}
+		}
+		sum += winnings
+	}
+	var avg = sum/100;
+	console.log("The avg winnings for red on roulette is: " + avg);
+	//-50 is the average "Winnings". Yes, lets play roullete!!!!!
+}
+
+
+//Problem7
+//Another form of bet for roulette is to bet that a specific number (say 17) will turn up. If the ball stops on your number, you get your dollar back plus 35 dollars. If not, you lose your dollar. Write a program that will plot your winnings when you make 500 plays of roulette at Las Vegas, first when you bet each time on red (see Exercise 6), and then for a second visit to Las Vegas when you make 500 plays betting each time on the number 17. What differences do you see in the graphs of your winnings on these two occasions?
+
+if ( p==7 ){
+	sum = 0;
+	for ( var a=0; a<5000000; a++){
+		winnings = 0;
+		for ( var i=0; i<1000; i++){
+			var roll = n_dice_roll(38);
+			if(roll == 17){
+				winnings +=35;
+			}
+			else{
+				winnings --;
+			}
+		}
+		sum += winnings
+	}
+	var avg = sum/5000000;
+	console.log("The avg winnings for 17 on roulette is: " + avg);
+	//-50 is the average "Winnings". Yes, lets play roullete!!!!!
+}
+
+//Problem8: NOT FINISHED
+//An astute student noticed that, in our simulation of the game of heads or tails (see Example 1.4), the proportion of times the player is always in the lead is very close to the proportion of times that the player’s total winnings end up 0. Work out these probabilities by enumeration of all cases for two tosses and for four tosses, and see if you think that these probabilities are, in fact, the same.
+
+//Intersting problem. I want to enumerate do this for n tosses.
+function check_cases(cases){
+	case_data = []
+	for (var i in cases){
+		var always_winning = true;
+		var score = 0;
+		for (var j in cases[i]){
+			var d = cases[i][j];
+			if(d == "1"){
+				score ++;
+			}
+			else{
+				score --;
+			}
+			if(score<1){
+				always_winning = false;
+			}
+		}	
+		case_data.push({always_winning:always_winning, enumerate:cases[i], score:score});
+		console.log(case_data[i]);
+	}
+}
+
+if ( p==8 ){
+	var cases = [];
+	n = 4;
+	for ( var i=0; i<Math.pow(n,2); i++){
+		var enumerate = i.toString(2);
+		var prepend = ""
+			for (var j=0; j<=n.toString(2).length-enumerate.length; j++){
+				prepend += "0"
+			}
+		cases.push(prepend + enumerate);
+	}
+
+	case_data = check_cases(cases);
+	//do something with case data
+
+
+
+
+}
