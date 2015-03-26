@@ -1,5 +1,5 @@
 
-p = 8;
+p = 9;
 n1 = 80000;
 n2 = 75;
 
@@ -201,13 +201,14 @@ function check_cases(cases){
 			else{
 				score --;
 			}
-			if(score<1){
+			if(score<0){
+				//He is always winning even with a score 0 AS LONG as he never goes below 0 at any instant
 				always_winning = false;
 			}
 		}	
 		case_data.push({always_winning:always_winning, enumerate:cases[i], score:score});
-		console.log(case_data[i]);
 	}
+	return case_data
 }
 
 if ( p==8 ){
@@ -224,8 +225,55 @@ if ( p==8 ){
 
 	case_data = check_cases(cases);
 	//do something with case data
+	always_winning = 0;
+	score_is_zero  = 0;
+	for( var i in case_data){
+		//count always in lead 
+		if(case_data[i]['always_winning'])always_winning ++;	
+
+		//count score is zero
+		if(case_data[i]['score'] == 0) score_is_zero ++;
+	}
+	console.log("Always winning proportion is: " + always_winning/case_data.length)
+	console.log("0 score proportion is: " + score_is_zero/case_data.length)
+	//Yes, it holds for 4, but not for larger numbers as far as I can tell
+}
 
 
+//The Labouchere system for roulette is played as follows. Write down a list of numbers, usually 1, 2, 3, 4. Bet the sum of the first and last, 1+4 = 5, on red. If you win, delete the first and last numbers from your list. If you lose, add the amount that you last bet to the end of your list. Then use the new list and bet the sum of the first and last numbers (if there is only one number, bet that amount). Continue until your list becomes empty. Show that, if this happens, you win the sum, 1 + 2 + 3 + 4 = 10, of your original list. Simulate this system and see if you do always stop and, hence, always win. If so, why is this not a foolproof gambling system?
 
+if ( p==9 ){
+	var winnings = 0;
+	var maximum = 0;
+	labouchere = [1, 2, 3, 4, 5];
+	sum = 0;
+	for ( var i=0; i<labouchere.length; i++ ){
+		sum += labouchere[i];
+	}
+	iterations = 0;
+	while(true){//Around and around it goes, where it stops, nobody knows!!!! Programming roulette pun :)
+		iterations ++;
+		if (labouchere.length == 0)break;
+		else{
+			var bet = labouchere[0] + labouchere[labouchere.length-1];
+			if(bet>maximum) maximum = bet
+			var roll = n_dice_roll(38);
+			if(roll <= 18){
+				winnings += bet;		
+				labouchere = labouchere.slice(1, labouchere.length-1);     //Remove last and first
 
+			}
+			else{
+				winnings -= bet;		
+				labouchere.push(bet);
+			}
+
+		}
+	}
+	console.log("After " + iterations + " iterations")
+	console.log("You won " + winnings + " dollars");
+	console.log("with the sum of your list being " + sum);
+	console.log("and a maximum be of " + maximum);
+	console.log("even though you always win...");
+	console.log("run this enough times and see why your still a loser");
 }
