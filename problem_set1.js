@@ -1,5 +1,5 @@
 
-p = 9;
+p = 10;
 n1 = 80000;
 n2 = 75;
 
@@ -277,3 +277,35 @@ if ( p==9 ){
 	console.log("even though you always win...");
 	console.log("run this enough times and see why your still a loser");
 }
+
+//Another well-known gambling system is the martingale doubling system. Sup- pose that you are betting on red to turn up in roulette. Every time you win, bet 1 dollar next time. Every time you lose, double your previous bet. Con- tinue to play until you have won at least 5 dollars or you have lost more than 100 dollars. Write a program to simulate this system and play it a number of times and see how you do. In his book The Newcomes, W. M. Thack- eray remarks “You have not played as yet? Do not do so; above all avoid a martingale if you do.”10 Was this good advice?
+//
+//
+
+if ( p==10 ){
+
+	//Simulate 100000 times
+	var times_won = 0;
+	for( var i=0; i<100000; i++ ){	
+		var winnings = 0;
+		var bet = 1;
+		while(winnings >= -100 && winnings <= 5){
+			var roll = n_dice_roll(38);
+			if( roll<=18 ){
+				winnings += bet;
+			}else{
+				winnings -= bet;
+				bet *= 2;
+			}
+		}
+		if(winnings > 0){
+			times_won++;
+		}
+	}
+	console.log("Prob of winning: " + times_won/100000);
+	console.log("Prob of winning * 5: " + times_won/100000 * 5 +" ....vs....Prob of losing * 100: " + (1-(times_won/100000)) * 100);
+	console.log("Look at expected winnings. Do not play!");
+}
+
+
+
