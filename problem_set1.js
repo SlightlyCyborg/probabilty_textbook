@@ -1,5 +1,5 @@
 
-p = 10;
+p = 11;
 n1 = 80000;
 n2 = 75;
 
@@ -307,5 +307,34 @@ if ( p==10 ){
 	console.log("Look at expected winnings. Do not play!");
 }
 
-
-
+//Modify the program HTSimulation so that it keeps track of the maximum of Peter’s winnings in each game of 40 tosses. Have your program print out the proportion of times that your total winnings take on values 0, 2, 4, . . . , 40. 
+if ( p==11 ){
+	
+	winning_array = [];
+	for( var n=0; n<100000; n++ ){
+		winnings = 0;
+		for( var i=0; i<40; i++ ){
+			toss = coin_flip();
+			if( toss == 1 ){
+				winnings ++;
+			}else{
+				winnings --;
+			}
+		}	
+		winning_array.push(winnings);
+	}
+	console.log(winning_array);
+	var proportions = []
+	for( var i=0; i<=20; i++ ){
+		proportions[i] = 0;	
+	}
+	for( var i in winning_array ){
+		if(winning_array[i]%2==0){
+			proportions[winning_array[i]/2]++;
+		}
+	}
+	for( var i=0; i<20; i++ ){
+		proportions[i] *= (1/100000);
+		console.log("i:" + i*2 + ": proportion " + proportions[i]);
+	}
+}
