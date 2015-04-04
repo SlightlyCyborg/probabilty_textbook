@@ -1,5 +1,5 @@
 
-p = 11;
+p = 18;
 n1 = 80000;
 n2 = 75;
 
@@ -338,3 +338,215 @@ if ( p==11 ){
 		console.log("i:" + i*2 + ": proportion " + proportions[i]);
 	}
 }
+
+//In an upcoming national election for the President of the United States, a pollster plans to predict the winner of the popular vote by taking a random sample of 1000 voters and declaring that the winner will be the one obtaining the most votes in his sample. Suppose that 48 percent of the voters plan to vote for the Republican candidate and 52 percent plan to vote for the Democratic candidate. To get some idea of how reasonable the pollster’s plan is, write a program to make this prediction by simulation. Repeat the simulation 100 times and see how many times the pollster’s prediction would come true. Repeat your experiment, assuming now that 49 percent of the population plan to vote for the Republican candidate; first with a sample of 1000 and then with a sample of 3000. (The Gallup Poll uses about 3000.) (This idea is discussed further in Chapter 9, Section 9.1.)
+
+if ( p == 12 ){
+
+	var poll = function(p_dem, sample_size){
+		d_win = 0;
+		r_win = 0;
+		n12 = 100;
+
+		for( var n=0; n<n12; n++ ){
+			var d = 0;
+			var r = 0;
+			for( var i=0; i<sample_size; i++ ){
+				if(Math.random() <= p_dem){
+					d++;
+				}else{
+					r++;
+				}
+			}
+			if(d>r){
+				d_win++;
+			}else{
+				r_win++;
+			}
+		}
+		proportion_correct = d_win/n12;
+		console.log("With a sample size of "+ sample_size +", the sample calculated correctly " +  proportion_correct * 100 + "% of the time");
+	}
+
+	//part a
+	poll(.52, 1000);
+	//part b
+	poll(.51, 1000);
+	//part c
+	poll(.51, 3000);
+
+}
+
+//The psychologist Tversky and his colleagues say that about four out of five people will answer (a) to the following question:
+//A certain town is served by two hospitals. In the larger hospital about 45 babies are born each day, and in the smaller hospital 15 babies are born each day. Although the overall proportion of boys is about 50 percent, the actual proportion at either hospital may be more or less than 50 percent on any day. At the end of a year, which hospital will have the greater number of days on which more than 60 percent of the babies born were boys?
+//(a) the large hospital
+//(b) the small hospital
+//(c) neither—the number of days will be about the same.
+//Assume that the probability that a baby is a boy is .5 (actual estimates make this more like .513). Decide, by simulation, what the right answer is to the question. Can you suggest why so many people go wrong?
+
+
+if ( p == 13 ){
+
+	var x = 0;
+	while(true){
+	var n13 = 365;
+	var small_win = 0;
+	var large_win = 0;
+	for ( var i=0; i<n13; i++ ){
+		small_babies = 15;
+		small_b = 0;
+		large_babies = 45;
+		large_b = 0;	
+		for ( var j=0; j<small_babies; j++ ){
+			if(Math.random() <=.5){
+				small_b++;
+			}
+		}
+		for ( var j=0; j<large_babies; j++ ){
+			if(Math.random() <=.5){
+				large_b++;
+			}
+		}
+		small_percent = small_b/small_babies;
+		large_percent = large_b/large_babies;
+		if (small_percent > .6){
+			small_win++;
+		}
+		if (large_percent > .6){
+			large_win++;
+		}
+	}
+	if(small_win<large_win){
+		console.log("Game OVER");
+	}
+	else{
+		console.log(x);
+	}
+	x++;
+	}
+}
+
+
+//Tversky and his colleagues12 studied the records of 48 of the Philadelphia 76ers basketball games in the 1980–81 season to see if a player had times when he was hot and every shot went in, and other times when he was cold and barely able to hit the backboard. The players estimated that they were about 25 percent more likely to make a shot after a hit than after a miss. In fact, the opposite was true—the 76ers were 6 percent more likely to score after a miss than after a hit. Tversky reports that the number of hot and cold streaks was about what one would expect by purely random effects. Assuming that a player has a fifty-fifty chance of making a shot and makes 20 shots a game, estimate by simulation the proportion of the games in which the player will have a streak of 5 or more hits.
+if ( p == 15 ){
+	
+	n15 = 100000;
+	var total_streak5=0;
+	for ( var i=0; i<n15; i++ ){
+		var current_streak = 0;
+		var streak5 = false;
+		var prob = .5;
+		var shots_made = 0;
+
+		while(shots_made != 20){
+			if( Math.random() <= prob ){
+				shots_made++;
+				current_streak++;
+				prob = .5;
+			}else{
+				current_streak = 0;
+				prob = .56;
+			}
+			if(current_streak >= 5){
+				streak5 = true;
+			}
+		}
+		if(streak5){total_streak5++;}
+	}
+
+	console.log(total_streak5);
+	var proportion = total_streak5/n15;
+	console.log("Simulated proportion:" + proportion);
+
+	//The raised chance after a miss does nothing for the probability of streaks
+}
+
+
+//Estimate, by simulation, the average number of children there would be in a family if all people had children until they had a boy. Do the same if all people had children until they had at least one boy and at least one girl. How many more children would you expect to find under the second scheme than under the first in 100,000 families? (Assume that boys and girls are equally likely.)
+
+if ( p == 16 ){
+
+	n16=1000000;
+	var ctot=0;
+	var c2tot=0;
+	for ( var n=0; n<n16; n++ ){
+
+		var b = 0;
+		var g = 0;
+		var b_2 = 0;
+		var g_2 = 0;
+
+		while ( b<1 || g<1 ){
+			if(Math.random() <= .5){b++;}
+			else{g++;}
+		}
+
+		while ( b_2<1 ){
+			if(Math.random() <= .5){b_2++;}
+			else{g_2++;}
+		}
+
+		ctot += b + g;
+		c2tot += b_2 + g_2;
+	}	
+	console.log("Average kids if trying for a boy and a girl = " + ctot/n16);
+	console.log("Average kids if trying for just a boy = " + c2tot/n16);
+
+}
+
+// Write a program to simulate a random walk in one dimension starting at 0. Have your program print out the lengths of the times between returns to the starting point (returns to 0). See if you can guess from this simulation the answer to the following question: Will the walker always return to his starting point eventually or might he drift away forever?
+
+if ( p == 17){
+	n17 = 1000;
+	tot_steps=0;
+
+	for ( var n=0; n<n17; n++ ){
+		
+		var pos = 0;
+		var steps = 0;
+
+		do{
+			if(Math.random() <= .5){
+				pos += 1;
+			}else{
+				pos -= 1;
+			}
+			steps++;
+		}while(pos!= 0)
+		console.log("Trial #"+ n + " : " + steps);
+		tot_steps += steps;
+	}
+	console.log("The average steps over " + n17 + " trials is: " + tot_steps/n17);
+}
+// They always return, but it sometimes takes a while
+
+
+//The paths of two walkers in two dimensions who meet after n steps can be considered to be a single path that starts at (0, 0) and returns to (0, 0) after 2n steps. This means that the probability that two random walkers in two dimensions meet is the same as the probability that a single walker in two dimensions ever returns to the starting point. Thus the question of whether two walkers are sure to meet is the same as the question of whether a single walker is sure to return to the starting point.
+//Write a program to simulate a random walk in two dimensions and see if you think that the walker is sure to return to (0, 0). If so, Po ́lya would be sure to keep meeting his friends in the park. Perhaps by now you have conjectured the answer to the question: Is a random walker in one or two dimensions sure to return to the starting point? Po ́lya answered this question for dimensions one, two, and three. He established the remarkable result that the answer is yes in one and two dimensions and no in three dimensions.
+
+
+if ( p == 18){
+	n18 = 10000;
+	tot_steps=0;
+
+	for ( var n=0; n<n18; n++ ){
+		
+		var pos = [0,0];
+		var steps = 0;
+
+		do{
+			dim = ( Math.floor( 2 * Math.random() ) )
+			if(Math.random() <= .5){
+				pos[dim] += 1;
+			}else{
+				pos[dim] -= 1;
+			}
+			steps++;
+
+		}while( pos[0]!=0 || pos[1]!=0 )
+		console.log("Trial #"+ n + " : " + steps);
+		tot_steps += steps;
+	}
+	console.log("The average steps over " + n18 + " trials is: " + tot_steps/n18);
+}//I Get that it wont work!!!!
+
